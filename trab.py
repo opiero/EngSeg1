@@ -3,7 +3,8 @@ import imageio
 import random, sys
 
 def string_corrector(text):
-	text = text.replace("\\n']","")
+	text = text.replace("\\n","")
+	text = text.replace("']","")
 	text = text.replace("['","")
 	return text
 

@@ -66,6 +66,7 @@ def cypher(text_mtx, key):
         idx = np.argmin(aux_key)
         res[:, i] = text_mtx[:, idx]
         aux_key[idx] = 'z'
+    print(res)
     return res
 
 def decypher(text_mtx, key):
@@ -74,9 +75,8 @@ def decypher(text_mtx, key):
     res = np.chararray(text_mtx.shape)
     for i in range(len(key)):
         idx = np.argmin(aux_key)
-        text_mtx[:, i] = res[:, idx]
+        res[:, idx] = text_mtx[:, i]
         aux_key[idx] = 'z'
-    print(res)
     return res
 """
     arg[1] = Cypher / decypher
@@ -98,7 +98,6 @@ if op == 'C':
     t = string_corrector(t)
     output = str(sys.argv[4]).rstrip()
     t = string_extensor(t, k)
-    print(t)
     res = string_to_matrix(t, k)
     res = cypher(res, k)
     save_matrix_to_image(res, output)

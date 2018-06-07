@@ -71,18 +71,28 @@ def decypher(text_mtx, key):
         text_mtx[:, i] = res[:, idx]
         aux_key[idx] = 'z'
     return res
+"""
+    arg[1] = Cypher / decypher
+    arg[2] = input filename
+    arg[3] = key filename
+    arg[4] = output filename
+"""
+input_file = sys.argv[2]
 
-with open (sys.argv[1], "r") as myfile:
-    t=myfile.readlines()
-
-with open (sys.argv[2], "r") as myfile:
+with open (sys.argv[3], "r") as myfile:
     k=myfile.readlines()
-t = str(t).rstrip()
-k = str(k).rstrip()
-output = str(sys.argv[3]).rstrip()
-t = string_extensor(t, k)
-res = string_to_matrix(t, k)
-save_matrix_to_image(res, output)
-res = read_data_from_image(output)
-res = cypher(res, k)
-res = decypher(res, k)
+op = str(sys.argv[1]).rstrip()
+if op == 'C':
+    with open (input_file, "r") as myfile:
+        t=myfile.readlines()
+    t = str(t).rstrip()
+    k = str(k).rstrip()
+    output = str(sys.argv[4]).rstrip()
+    t = string_extensor(t, k)
+    print(t)
+    res = string_to_matrix(t, k)
+    res = cypher(res, k)
+    save_matrix_to_image(res, output)
+elif op == 'D':
+    res = read_data_from_image(input_file)
+    res = decypher(res, k)

@@ -28,30 +28,19 @@ def string_to_matrix(text, key):
 def save_matrix_to_image(matrix, name):
     nlins = matrix.shape[0]
     ncols = matrix.shape[1]
-#    print(matrix.shape)
     res = np.ndarray((int(nlins/2), int(ncols/2),4), dtype=np.uint8)
-#    print(res.shape)
     for i in range(int(nlins/2)):
         for j in range(int(ncols/2)):
-#            print(i, j)
             res[i, j, 0] = ord(matrix[2 * i, 2 * j])
-#            print(chr(res[i,j,0]))
             res[i, j, 1] = ord(matrix[(i * 2)+1, 2 * j])
-#            print(chr(res[i,j,1]))
             res[i, j, 2] = ord(matrix[2 * i, (j * 2)+1])
-#            print(chr(res[i,j,2]))
             res[i, j, 3] = ord(matrix[(i * 2) +1, (j * 2) +1])
-#            print(chr(res[i,j,3]))
     imageio.imwrite(name, res)
 def read_data_from_image(name):
     img = imageio.imread(name)
     res = np.chararray((img.shape[0]*2, img.shape[1]*2))
-#    print(res)
-#    print('resultado:')
-#    print(img.shape)
     for i in range(img.shape[0]):
         for j in range(img.shape[1]):
-#            print(i, j)
             res[i*2,j*2] = chr(img[i,j,0])
             res[i*2+1,j*2] = chr(img[i,j,1])
             res[i*2,j*2+1] = chr(img[i,j,2])
@@ -78,6 +67,13 @@ def decypher(text_mtx, key):
         res[:, idx] = text_mtx[:, i]
         aux_key[idx] = 'z'
     return res
+
+def save_string_decyphered(text_mtx, name):
+	string = text_mtx.tostring().decode("utf-8")
+	file = open(name, "w")
+	file.write(string)
+	file.close()
+
 """
     arg[1] = Cypher / decypher
     arg[2] = input filename
@@ -85,6 +81,7 @@ def decypher(text_mtx, key):
     arg[4] = output filename
 """
 input_file = sys.argv[2]
+output = str(sys.argv[4]).rstrip()
 
 with open (sys.argv[3], "r") as myfile:
     k=myfile.readlines()
@@ -96,7 +93,6 @@ if op == 'C':
         t=myfile.readlines()
     t = str(t).rstrip()
     t = string_corrector(t)
-    output = str(sys.argv[4]).rstrip()
     t = string_extensor(t, k)
     res = string_to_matrix(t, k)
     res = cypher(res, k)
@@ -104,3 +100,4 @@ if op == 'C':
 elif op == 'D':
     res = read_data_from_image(input_file)
     res = decypher(res, k)
+    save_string_decyphered(res, output)

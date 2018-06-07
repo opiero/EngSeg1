@@ -2,13 +2,19 @@ import numpy as np
 import imageio
 import random, sys
 
+def string_corrector(text):
+	text = text.replace("\\n']","")
+	text = text.replace("['","")
+	return text
+
 def string_extensor(text, key):
-    size = len(key) - (len(text) % len(key))
-    if (int((len(text)/len(key)))%2 == 0):
+    size = 0
+    if ((len(text) % len(key)) != 0):
+    	size = len(key) - (len(text) % len(key))
+    if (((len(text)+size)/len(key))%2 != 0):
         size += len(key)
-    if isinstance((len(text)/len(key)), float):
-        for i in range(size):
-            text = ''.join([text, chr(random.randint(1, 26) + 96)])
+    for i in range(size):
+        text = ''.join([text, chr(random.randint(1, 26) + 96)])
     return text
 
 def string_to_matrix(text, key):
@@ -70,6 +76,7 @@ def decypher(text_mtx, key):
         idx = np.argmin(aux_key)
         text_mtx[:, i] = res[:, idx]
         aux_key[idx] = 'z'
+    print(res)
     return res
 """
     arg[1] = Cypher / decypher
@@ -81,12 +88,14 @@ input_file = sys.argv[2]
 
 with open (sys.argv[3], "r") as myfile:
     k=myfile.readlines()
+k = str(k).rstrip()
+k = string_corrector(k)
 op = str(sys.argv[1]).rstrip()
 if op == 'C':
     with open (input_file, "r") as myfile:
         t=myfile.readlines()
     t = str(t).rstrip()
-    k = str(k).rstrip()
+    t = string_corrector(t)
     output = str(sys.argv[4]).rstrip()
     t = string_extensor(t, k)
     print(t)

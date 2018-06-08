@@ -1,8 +1,10 @@
 import numpy as np
 import imageio
 import random, sys
+from unicodedata import normalize
 
 def string_corrector(text):
+	text = normalize('NFKD', text).encode("ASCII", "ignore").decode("ASCII")
 	text = text.replace("\\n","")
 	text = text.replace("']","")
 	text = text.replace("['","")
@@ -93,7 +95,9 @@ if op == 'C':
     with open (input_file, "r") as myfile:
         t=myfile.readlines()
     t = str(t).rstrip()
+    print(t)
     t = string_corrector(t)
+    print(t)
     t = string_extensor(t, k)
     res = string_to_matrix(t, k)
     res = cypher(res, k)

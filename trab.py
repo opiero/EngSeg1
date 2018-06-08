@@ -58,7 +58,6 @@ def cypher(text_mtx, key):
         idx = np.argmin(aux_key)
         res[:, i] = text_mtx[:, idx]
         aux_key[idx] = 'z'
-    print(res)
     return res
 
 def decypher(text_mtx, key):
@@ -95,9 +94,7 @@ if op == 'C':
     with open (input_file, "r") as myfile:
         t=myfile.readlines()
     t = str(t).rstrip()
-    print(t)
     t = string_corrector(t)
-    print(t)
     t = string_extensor(t, k)
     res = string_to_matrix(t, k)
     res = cypher(res, k)
